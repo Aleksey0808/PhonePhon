@@ -2,13 +2,16 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 
 const CategoryList = ({ categories, onSelect }) => (
-  <View style={styles.container}>
-    {categories.map((category) => (
-      <TouchableOpacity key={category} onPress={() => onSelect(category)} style={styles.button}>
-        <Text style={styles.text}>{category}</Text>
+  <FlatList
+    data={categories}
+    keyExtractor={(item) => item} 
+    renderItem={({ item }) => (
+      <TouchableOpacity onPress={() => onSelect(item)} style={styles.button}>
+        <Text style={styles.text}>{item}</Text>
       </TouchableOpacity>
-    ))}
-  </View>
+    )}
+    contentContainerStyle={styles.container} 
+  />
 );
 
 const styles = StyleSheet.create({
