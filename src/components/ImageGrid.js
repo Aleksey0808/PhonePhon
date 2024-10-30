@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 
 const ImageGrid = ({ images, onSelect }) => {
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => onSelect(item)}>
+  const renderItem = ({ item, index }) => (
+    <TouchableOpacity onPress={() => onSelect(index)}>
       <Image source={item} style={styles.image} />
     </TouchableOpacity>
   );
@@ -12,12 +12,13 @@ const ImageGrid = ({ images, onSelect }) => {
     <FlatList
       data={images}
       renderItem={renderItem}
-      keyExtractor={(item, index) => index.toString()}
-      numColumns={3} 
+      keyExtractor={(_, index) => index.toString()}
+      numColumns={3}
       contentContainerStyle={styles.container}
     />
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

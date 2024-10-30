@@ -28,8 +28,8 @@ const CategoryScreen = ({ route }) => {
   };
 
   const handleSelectImage = (index) => {
-    setSelectedImageIndex(index);
-    setModalVisible(true);
+      setSelectedImageIndex(index);
+      setModalVisible(true);
   };
 
   const goToPreviousImage = () => {
@@ -42,7 +42,7 @@ const CategoryScreen = ({ route }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <ImageGrid images={images[category]} onSelect={handleSelectImage} />
+      <ImageGrid images={images[category]} onSelect={(index) => handleSelectImage(index)} />
       
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <Pressable style={styles.modalOverlay} onPress={() => setModalVisible(false)}>
