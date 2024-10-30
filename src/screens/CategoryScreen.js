@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Modal, Image, TouchableOpacity, Text, StyleSheet, Pressable } from 'react-native';
 import ImageGrid from '../components/ImageGrid';
-import WallpaperButton from '../components/WallpaperButton';
 import { setWallpaper } from '../utils/setWallpaper';
 
 const CategoryScreen = ({ route }) => {
