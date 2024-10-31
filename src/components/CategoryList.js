@@ -16,19 +16,24 @@ const CategoryList = ({ categories, onSelect }) => (
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 10,
+    gap: 12,
   },
   button: {
+    width: 140,
     margin: 10,
-    padding: 10,
-    backgroundColor: '#ddd',
-    borderRadius: 5,
+    padding: 14,
+    backgroundColor: '#9eaa97',
+    borderRadius: 15,
   },
   text: {
-    fontSize: 18,
+    textAlign: 'center',
+    fontSize: 16,
   },
 });
 

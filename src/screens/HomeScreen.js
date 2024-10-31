@@ -1,8 +1,9 @@
 // screens/HomeScreen.js
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Button } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import CategoryList from '../components/CategoryList';
 import {allCategories} from '../helpers/allCategories'
+import { LinearGradient } from 'expo-linear-gradient';
 
 const HomeScreen = ({ navigation }) => {
   const [filteredCategories, setFilteredCategories] = useState(allCategories);
@@ -27,16 +28,31 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView >
+      <ScrollView showsVerticalScrollIndicator={false}>
+         <LinearGradient
+    colors={['#020024', '#09796c', '#0e0a08']} 
+    style={styles.container} 
+  >
       <TextInput
         style={styles.searchInput}
-        placeholder="Поиск по категориям"
+        placeholder="Search by category"
+        placeholderTextColor="#fff"
         value={searchQuery}
         onChangeText={handleSearch}
       />
-      <Button title="Поиск" onPress={handleSearchButtonPress} />
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={handleSearchButtonPress}
+      >
+        <Text style={styles.buttonText}>Search</Text>
+      </TouchableOpacity>
       <CategoryList categories={filteredCategories} onSelect={handleSelectCategory} />
-    </View>
+    </LinearGradient>
+      </ScrollView>
+    </SafeAreaView>
+      
+   
   );
 };
 
@@ -46,12 +62,32 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   searchInput: {
-    height: 40,
+    marginTop: 5,
+    height: 50,
     borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
+    borderWidth: 2,
+    borderRadius: 15,
     paddingHorizontal: 10,
     marginBottom: 10,
+    color: '#fff'
+  },
+  button: {
+    backgroundColor: '#69b9b0', 
+    paddingVertical: 15, 
+    paddingHorizontal: 30,
+    borderRadius: 25, 
+    marginTop: 15, 
+    marginBottom: 15,
+    shadowColor: '#01fee1', 
+    shadowOffset: { width: 2, height: 2 }, 
+    shadowOpacity: 0.3, 
+    shadowRadius: 4, 
+    elevation: 5, 
+  },
+  buttonText: {
+    color: '#fff', 
+    fontSize: 18, 
+    textAlign: 'center', 
   },
 });
 
