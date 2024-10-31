@@ -1,25 +1,45 @@
-import React, { useState } from 'react';
-import { View, Modal, Image, TouchableOpacity, Text, StyleSheet, Pressable } from 'react-native';
+// screens/CategoryScreen.js
+import React, { useEffect, useState } from 'react';
+import { View, Modal, Image, TouchableOpacity, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
 import ImageGrid from '../components/ImageGrid';
 import { setWallpaper } from '../utils/setWallpaper';
+import { fetchImagesByCategory } from '../utils/pexelsApi';
 
 const CategoryScreen = ({ route }) => {
   const { category } = route.params;
-  const images = {
-    Nature: [require('../../assets/images/nature/1.jpg')],
-    Abstract: [require('../../assets/images/abstract/1.jpg')],
-    Animals: [require('../../assets/images/animals/1.jpg'), require('../../assets/images/animals/2.jpg')],
-  };
-
+  const [images, setImages] = useState([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      setLoading(true);
+      const fetchedImages = await fetchImagesByCategory(category);
+      setImages(fetchedImages);
+      setLoading(false);
+    };
+    loadImages();
+  }, [category]);
+
+  const loadMoreImages = async () => {
+    if (loadingMore) return;
+    setLoadingMore(true);
+    const nextPage = page + 1;
+    const fetchedImages = await fetchImagesByCategory(category, nextPage);
+    setImages((prevImages) => [...prevImages, ...fetchedImages]);
+    setPage(nextPage);
+    setLoadingMore(false);
+  };
 
   const handleSetWallpaper = async () => {
-    if (images[category][selectedImageIndex]) {
+    if (images[selectedImageIndex]) {
       try {
-        await setWallpaper(images[category][selectedImageIndex]);
+        await setWallpaper(images[selectedImageIndex]);
         console.log('Обои успешно установлены');
-        setModalVisible(false); 
+        setModalVisible(false);
       } catch (error) {
         console.log('Ошибка при установке обоев:', error);
       }
@@ -27,26 +47,35 @@ const CategoryScreen = ({ route }) => {
   };
 
   const handleSelectImage = (index) => {
-      setSelectedImageIndex(index);
-      setModalVisible(true);
+    setSelectedImageIndex(index);
+    setModalVisible(true);
   };
 
   const goToPreviousImage = () => {
-    setSelectedImageIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : images[category].length - 1));
+    setSelectedImageIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : images.length - 1));
   };
 
   const goToNextImage = () => {
-    setSelectedImageIndex((prevIndex) => (prevIndex < images[category].length - 1 ? prevIndex + 1 : 0));
+    setSelectedImageIndex((prevIndex) => (prevIndex < images.length - 1 ? prevIndex + 1 : 0));
   };
 
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
   return (
-    <View style={{ flex: 1 }}>
-      <ImageGrid images={images[category]} onSelect={(index) => handleSelectImage(index)} />
+    <View style={{ flex: 1, width: '100%' }}>
+      <ImageGrid 
+        images={images} 
+        onSelect={(index) => handleSelectImage(index)} 
+        onEndReached={loadMoreImages} 
+        loadingMore={loadingMore}
+      />
       
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <Pressable style={styles.modalOverlay} onPress={() => setModalVisible(false)}>
           <View style={styles.modalContent}>
-            <Image source={images[category][selectedImageIndex]} style={styles.image} />
+            <Image source={{ uri: images[selectedImageIndex] }} style={styles.image} />
             <View style={styles.navigation}>
               <TouchableOpacity onPress={goToPreviousImage} style={styles.arrowButton}>
                 <Text style={styles.arrowText}>◀</Text>
@@ -64,6 +93,7 @@ const CategoryScreen = ({ route }) => {
           </View>
         </Pressable>
       </Modal>
+      {loadingMore && <ActivityIndicator size="small" color="#0000ff" />}
     </View>
   );
 };
