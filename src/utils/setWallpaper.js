@@ -1,20 +1,30 @@
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
-import * as Asset from 'expo-asset';
+import * as Sharing from 'expo-sharing';
 
-export const setWallpaper = async (image) => {
+export const setWallpaper = async (imageUri) => {
+  console.log('image', imageUri);
+
   const { status } = await MediaLibrary.requestPermissionsAsync();
   if (status !== 'granted') {
-    console.log('Разрешение не предоставлено');
+    console.log('Разрешение на доступ к медиа-библиотеке не предоставлено');
     return;
   }
 
   try {
-    const asset = await Asset.loadAsync(image);
+    const fileUri = `${FileSystem.cacheDirectory}wallpaper.jpg`;
+    await FileSystem.downloadAsync(imageUri, fileUri);
 
-    const mediaAsset = await MediaLibrary.createAssetAsync(asset.localUri);
-    await MediaLibrary.createAlbumAsync('Wallpapers', mediaAsset, false);
-    console.log('Обои установлены');
+    if (await Sharing.isAvailableAsync()) {
+      await Sharing.shareAsync(fileUri, {
+        dialogTitle: 'Установить обои',
+        UTI: 'public.image', 
+      });
+    } else {
+      console.log('Sharing is not available on this platform');
+    }
+
+    console.log('Обои успешно установлены');
   } catch (error) {
     console.log('Ошибка при установке обоев:', error);
   }

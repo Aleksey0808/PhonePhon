@@ -4,6 +4,7 @@ import { View, Modal, Image, TouchableOpacity, Text, StyleSheet, Pressable, Acti
 import ImageGrid from '../components/ImageGrid';
 import { setWallpaper } from '../utils/setWallpaper';
 import { fetchImagesByCategory } from '../utils/pexelsApi';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const CategoryScreen = ({ route }) => {
   const { category } = route.params;
@@ -64,8 +65,11 @@ const CategoryScreen = ({ route }) => {
   }
 
   return (
-    <View style={{ flex: 1, width: '100%' }}>
-      <ImageGrid 
+        <LinearGradient
+        colors={['#020024', '#09796c', '#0e0a08']} 
+        style={{ flex: 1, width: '100%' }} 
+      >
+         <ImageGrid 
         images={images} 
         onSelect={(index) => handleSelectImage(index)} 
         onEndReached={loadMoreImages} 
@@ -85,16 +89,16 @@ const CategoryScreen = ({ route }) => {
               </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={handleSetWallpaper} style={styles.setWallpaperButton}>
-              <Text style={styles.buttonText}>Установить как обои</Text>
+              <Text style={styles.buttonText}>Set as wallpaper</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-              <Text style={styles.buttonText}>Закрыть</Text>
+              <Text style={styles.buttonText}>Close</Text>
             </TouchableOpacity>
           </View>
         </Pressable>
       </Modal>
       {loadingMore && <ActivityIndicator size="small" color="#0000ff" />}
-    </View>
+      </LinearGradient>
   );
 };
 

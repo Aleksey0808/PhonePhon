@@ -1,2 +1,2 @@
-export const allCategories = ['Technology', 'Art', 'History', 'Music', 'Sports', 'Fashion', 'Health', 'Literature', 'Culture', 'Adventure', 'Education', 'Wildlife', 'Architecture', 'Transportation', 'Mythology', 'Psychology'];
+export const allCategories = ['Technology', 'Art', 'History', 'Music', 'Sports', 'Fashion', 'Health', 'Literature', 'Culture', 'Adventure', 'Education', 'Wildlife', 'Architecture', 'Transportation', 'Mythology', 'Psychology', 'Girl', 'Car', 'Love', 'Phone', 'Fly', 'Cat'];
 ;

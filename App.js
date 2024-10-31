@@ -10,8 +10,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="HomeScreen">
-        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Выбор категории' }} />
-        <Stack.Screen name="CategoryScreen" component={CategoryScreen} options={{ title: 'Выбор изображения' }} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Select category' }} />
+        <Stack.Screen name="CategoryScreen" component={CategoryScreen} options={{ title: 'Select image' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
